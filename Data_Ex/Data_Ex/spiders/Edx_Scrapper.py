@@ -21,8 +21,7 @@ class EdxSpider(scrapy.Spider):
 
 	def parse_links(self,response):
 		
-		##Note : Not extracting data since edx is js driven content loader
-		## need libraries like splash to crawl js driven sites
+		##cannot load site data.
 
 		link = response.request.url
 		course_name = response.xpath('//h1[@id="course-intro-heading"]/text()').extract_first()

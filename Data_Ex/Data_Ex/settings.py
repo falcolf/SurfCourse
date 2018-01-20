@@ -21,9 +21,6 @@ NEWSPIDER_MODULE = 'Data_Ex.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-FEED_URI = 'scrape_data.json'
-FEED_FORMAT = 'json'
-
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

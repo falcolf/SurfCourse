@@ -1,8 +1,8 @@
 import scrapy
 import json
-
+import math
 class ClassCentralSpider(scrapy.Spider):
-	name = 'classcentral_scrapper'
+	name = 'classcentralall_scrapper'
 
 	def __init__(self, keys='', **kwargs):
 		self.vals = keys
@@ -10,24 +10,28 @@ class ClassCentralSpider(scrapy.Spider):
 
 	def start_requests(self):
 		urls=[
-				'https://www.class-central.com/search?q='+self.vals #machine+learning
-				#'https://www.class-central.com/subject/cs'
+				'https://www.class-central.com/subject/cs',
+				'https://www.class-central.com/subject/business',
+				'https://www.class-central.com/subject/humanities'
+
 		]
 		for url in urls:
 			yield scrapy.Request(url = url,callback = self.parse)
 
 	def parse(self,response):
-		print(response.request.url)
-		links = response.xpath('//a[@class="text--charcoal text-2 medium-up-text-1 block course-name"]/@href').extract()
-		
-		# f=open("linkdata.txt",'w')
-		# for link in links:
-		# 	f.write(link)
-		# 	f.write('\n')		
+		courses = int(response.xpath('//span[@id="number-of-courses"]/text()').extract_first())
+		pages = math.ceil(courses/50)
+		for i in range(1,pages+1):
+			ext = response.request.url+'?page='+str(i)
+			yield scrapy.Request(ext,callback = self.parse_pages)
 
+	def parse_pages(self,response):
+
+		links = response.xpath('//a[@class="text--charcoal text-2 medium-up-text-1 block course-name"]/@href').extract()
+		f=open("linkdata.txt",'a')
 		for link in links:
 			yield scrapy.Request(response.urljoin(link),callback = self.parse_links)
-			
+				
 
 	def parse_links(self,response):
 		course_link = self.formatVal(response.xpath('//div[@class="course-data-button"]/a/@href').extract_first())
@@ -70,6 +74,8 @@ class ClassCentralSpider(scrapy.Spider):
 	def formatProf(self,x):
 		if not x:
 			return "Information Not Available"
-
 			
 
+
+	def getKeywords(self,body):
+		
