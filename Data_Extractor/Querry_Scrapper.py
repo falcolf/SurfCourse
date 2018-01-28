@@ -1,6 +1,6 @@
 import os
 from scrapyscript import Job, Processor
-from Data_Ex.Data_Ex.spiders.ClassCentral_Scrapper import ClassCentralSpider
+from Data_Extractor.Data_Ex.spiders.ClassCentral_Scrapper import ClassCentralSpider
 
 class Scrapper:
 	def scrape(self,query):

@@ -42,6 +42,14 @@ class ClassCentralSpider(scrapy.Spider):
 		course_hours = self.formatVal(response.xpath('//div[@class="course-data-row course-hours"]/span[2]/text()').extract_first())
 		course_duration = self.formatVal(response.xpath('//div[@class="course-data-row course-sessions"]/span[2]/span/text()').extract_first())
 		course_prof = self.formatProf(response.xpath('//div[@class="course-provider-wrap"]/ul/span[2]/text()').extract())
+		print("===============================================================")
+		print(course_link)
+		print("\n")
+		print(course_name)
+		print("\n")
+		print(course_provider)
+		print("===============================================================")
+
 		yield{
 
 				'course_link' : course_link,

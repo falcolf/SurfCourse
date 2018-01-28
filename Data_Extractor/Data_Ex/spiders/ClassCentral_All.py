@@ -1,19 +1,30 @@
 import scrapy
 import json
 import math
-class ClassCentralSpider(scrapy.Spider):
-	name = 'classcentralall_scrapper'
+#from Data_Extractor.Data_Ex.spiders.firebase_access import FirebaseAccess
+class CoursesSpider(scrapy.Spider):
+	name = 'courses_scrapper'
 
-	def __init__(self, keys='', **kwargs):
-		self.vals = keys
-		super().__init__(**kwargs)
+	def __init__(self, fbadb='', **kwargs):
+		self.db = fbadb
 
 	def start_requests(self):
 		urls=[
-				'https://www.class-central.com/subject/cs',
-				'https://www.class-central.com/subject/business',
-				'https://www.class-central.com/subject/humanities'
 
+				'https://www.class-central.com/subject/cs'
+				'https://www.class-central.com/subject/business',
+				'https://www.class-central.com/subject/science',
+				'https://www.class-central.com/subject/data-science',
+				'https://www.class-central.com/subject/programming-and-software-development',
+				'https://www.class-central.com/subject/engineering',
+				'https://www.class-central.com/subject/maths',		
+				'https://www.class-central.com/subject/humanities',
+				'https://www.class-central.com/subject/social-sciences',
+				'https://www.class-central.com/subject/education',
+				'https://www.class-central.com/subject/personal-development',
+				'https://www.class-central.com/subject/art-and-design',
+				'https://www.class-central.com/subject/health'
+				
 		]
 		for url in urls:
 			yield scrapy.Request(url = url,callback = self.parse)
@@ -34,34 +45,47 @@ class ClassCentralSpider(scrapy.Spider):
 				
 
 	def parse_links(self,response):
+		sc_url = response.request.url;
+		key1=sc_url.split('.com')[1]
+		key=key1.replace('/','-')
 		course_link = self.formatVal(response.xpath('//div[@class="course-data-button"]/a/@href').extract_first())
 		course_name = self.formatVal(response.xpath('//h1[@class="course-title"]/text()').extract_first())
 		course_subject = self.formatVal(response.xpath('//div[@class="course-data-row course-subject"]/a/text()').extract_first())
 		course_val = self.formatVal(response.xpath('//div[@class="course-data-row course-provider"]/span[2]/text()').extract_first())
-		course_pace = self.formatVal(response.xpath('//div[@class="course-data-row course-pace"]/a/text()').extract_first())
+		#course_pace = self.formatVal(response.xpath('//div[@class="course-data-row course-pace"]/a/text()').extract_first())
 		course_institution = self.formatVal(response.xpath('//div[@class="course-data-row course-institution"]/a/text()').extract_first())
 		course_provider = self.formatVal(response.xpath('//div[@class="course-data-row course-provider"]/a/text()').extract_first())
 		course_lang = self.formatVal(response.xpath('//div[@class="course-data-row course-language"]/a/text()').extract_first())
 		course_certifications = self.formatVal(response.xpath('//div[@class="course-data-row course-certificates"]/span[2]/text()').extract_first())
 		course_hours = self.formatVal(response.xpath('//div[@class="course-data-row course-hours"]/span[2]/text()').extract_first())
 		course_duration = self.formatVal(response.xpath('//div[@class="course-data-row course-sessions"]/span[2]/span/text()').extract_first())
-		course_prof = self.formatProf(response.xpath('//div[@class="course-provider-wrap"]/ul/span[2]/text()').extract())
-		yield{
+		course_prof = response.xpath('//div[@class="course-provider-wrap"]/span[2]/text()').extract()		
+		course_keywords = self.getKeywords(course_subject,course_name);
+		print("======================================")
+		print(key)
+		print("======================================")
+		
+		dic = {
 
+				'sc_url' : sc_url,
 				'course_link' : course_link,
 				'course_name' : course_name,
 				'course_subject' : course_subject,
 				'course_val' : course_val,
-				'course_pace' : course_pace,
+				#'course_pace' : course_pace,
 				'course_institution' : course_institution,
 				'course_provider' : course_provider,
 				'course_lang' : course_lang,
 				'course_certifications' : course_certifications,
 				'course_hours' : course_hours,
 				'course_duration' : course_duration,
-				'course_prof' : course_prof
+				'course_prof' : course_prof,
+				'course_keywords' : course_keywords
 
 			}
+
+		self.db.save(dic,key)
+	
 
 	def formatVal(self,x):
 		if not x:
@@ -71,11 +95,13 @@ class ClassCentralSpider(scrapy.Spider):
 
 		return x
 
-	def formatProf(self,x):
-		if not x:
-			return "Information Not Available"
-			
-
-
-	def getKeywords(self,body):
+	def getKeywords(self,sub,name):
+		arbs=['in' , 'and' , 'together' , 'hands' , 'on' , 'with' , 'how' , 'of' , 'the' , 'for' , 'in' , ':' , 'introduction' , 'a' , 'an' , 'to' , 'starting' , 'get' , 'started' , 'learning' , 'up' , '-' ]
+		sub=sub.replace(':',' ')
+		name=name.replace(':',' ')
+		a=sub.split();
+		b=name.split();
+		tokens=a+b;
+		keyws=[word.lower() for word in tokens if word.lower() not in arbs]
+		return keyws
 		
