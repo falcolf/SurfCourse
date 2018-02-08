@@ -65,13 +65,7 @@ class CoursesSpider(scrapy.Spider):
 		print(key)
 		print("======================================")
 		self.saveTocsv(" ".join(course_keywords),course_subject)
-		with open('file1.txt','a') as f :
-			f.write(subkey)
-			f.write('\n')
-		with open('file2.txt','a') as f :
-			f.write(course_subject)
-			f.write('\n')
-	
+		
 	def formatVal(self,x):
 		if not x:
 			return "Information Not AVailable"

@@ -75,7 +75,7 @@ class CoursesSpiderA(scrapy.Spider):
 				'course_keywords' : course_keywords
 
 			}
-		self.saveTocsv(" ".join(course_keywords),course_subject)
+		#self.saveTocsv(" ".join(course_keywords),course_subject)
 		self.db.save(dic,course_subject,key)
 	
 	def formatVal(self,x):
