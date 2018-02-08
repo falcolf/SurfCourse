@@ -3,14 +3,14 @@ import json
 import math
 #from Data_Extractor.Data_Ex.spiders.firebase_access import FirebaseAccess
 class CoursesSpiderA(scrapy.Spider):
-	name = 'courses_scrapper'
+	name = 'courses_scrapperA'
 
 	def __init__(self, fbadb='', **kwargs):
 		self.db = fbadb
 
 	def start_requests(self):
 		urls=[
-				'https://www.class-central.com/subject/cs'
+				'https://www.class-central.com/subject/cs',
 				'https://www.class-central.com/subject/business',
 				'https://www.class-central.com/subject/science',
 				'https://www.class-central.com/subject/data-science',
@@ -32,7 +32,6 @@ class CoursesSpiderA(scrapy.Spider):
 	def parse_pages(self,response):
 
 		links = response.xpath('//a[@class="text--charcoal text-2 medium-up-text-1 block course-name"]/@href').extract()
-		f=open("linkdata.txt",'a')
 		for link in links:
 			yield scrapy.Request(response.urljoin(link),callback = self.parse_links)
 				
@@ -54,10 +53,10 @@ class CoursesSpiderA(scrapy.Spider):
 		course_duration = self.formatVal(response.xpath('//div[@class="course-data-row course-sessions"]/span[2]/span/text()').extract_first())
 		course_prof = response.xpath('//div[@class="course-provider-wrap"]/span[2]/text()').extract()		
 		course_keywords = self.getKeywords(course_subject,course_name);
+		subkey = course_subject.replace(' ','-').lower()
 		print("======================================")
 		print(key)
 		print("======================================")
-		
 		dic = {
 
 				'sc_url' : sc_url,
@@ -76,10 +75,9 @@ class CoursesSpiderA(scrapy.Spider):
 				'course_keywords' : course_keywords
 
 			}
-
-		self.db.save(dic,key)
+		self.saveTocsv(" ".join(course_keywords),course_subject)
+		self.db.save(dic,course_subject,key)
 	
-
 	def formatVal(self,x):
 		if not x:
 			return "Information Not AVailable"
@@ -97,10 +95,18 @@ class CoursesSpiderA(scrapy.Spider):
 		tokens=a+b;
 		keyws=[word.lower() for word in tokens if word.lower() not in arbs]
 		return keyws
+
+	def saveTocsv(self , keywords , subs):
+		print(keywords)
+		print(subs)
+		stra = keywords + '\t' + subs
+		with open('datafilefinal.csv','a' , newline = '') as f :
+			f.write(stra)
+			f.write('\n')
 		
 
 class CoursesSpiderB(scrapy.Spider):
-	name = 'courses_scrapper'
+	name = 'courses_scrapperB'
 
 	def __init__(self, fbadb='', **kwargs):
 		self.db = fbadb
@@ -113,7 +119,7 @@ class CoursesSpiderB(scrapy.Spider):
 				'https://www.class-central.com/subject/personal-development',
 				'https://www.class-central.com/subject/art-and-design',
 				'https://www.class-central.com/subject/health'
-				
+
 		]
 		for url in urls:
 			yield scrapy.Request(url = url,callback = self.parse)
@@ -128,7 +134,6 @@ class CoursesSpiderB(scrapy.Spider):
 	def parse_pages(self,response):
 
 		links = response.xpath('//a[@class="text--charcoal text-2 medium-up-text-1 block course-name"]/@href').extract()
-		f=open("linkdata.txt",'a')
 		for link in links:
 			yield scrapy.Request(response.urljoin(link),callback = self.parse_links)
 				
@@ -150,10 +155,10 @@ class CoursesSpiderB(scrapy.Spider):
 		course_duration = self.formatVal(response.xpath('//div[@class="course-data-row course-sessions"]/span[2]/span/text()').extract_first())
 		course_prof = response.xpath('//div[@class="course-provider-wrap"]/span[2]/text()').extract()		
 		course_keywords = self.getKeywords(course_subject,course_name);
+		subkey = course_subject.replace(' ','-').lower()
 		print("======================================")
 		print(key)
 		print("======================================")
-		
 		dic = {
 
 				'sc_url' : sc_url,
@@ -172,10 +177,9 @@ class CoursesSpiderB(scrapy.Spider):
 				'course_keywords' : course_keywords
 
 			}
-
-		self.db.save(dic,key)
+		#self.saveTocsv(" ".join(course_keywords),course_subject)
+		self.db.save(dic,course_subject,key)
 	
-
 	def formatVal(self,x):
 		if not x:
 			return "Information Not AVailable"
@@ -194,3 +198,10 @@ class CoursesSpiderB(scrapy.Spider):
 		keyws=[word.lower() for word in tokens if word.lower() not in arbs]
 		return keyws
 
+	def saveTocsv(self , keywords , subs):
+		print(keywords)
+		print(subs)
+		stra = keywords + '\t' + subs
+		with open('datafilefinal.csv','a' , newline = '') as f :
+			f.write(stra)
+			f.write('\n')

@@ -2,6 +2,7 @@ import scrapy
 import json
 import math
 #from Data_Extractor.Data_Ex.spiders.firebase_access import FirebaseAccess
+#from firebase_access import FirebaseAccess
 class CoursesSpider(scrapy.Spider):
 	name = 'courses_scrapper'
 
@@ -10,21 +11,20 @@ class CoursesSpider(scrapy.Spider):
 
 	def start_requests(self):
 		urls=[
-
-				'https://www.class-central.com/subject/cs'
+				'https://www.class-central.com/subject/cs',
 				'https://www.class-central.com/subject/business',
 				'https://www.class-central.com/subject/science',
 				'https://www.class-central.com/subject/data-science',
 				'https://www.class-central.com/subject/programming-and-software-development',
 				'https://www.class-central.com/subject/engineering',
-				'https://www.class-central.com/subject/maths',		
+				'https://www.class-central.com/subject/maths',
 				'https://www.class-central.com/subject/humanities',
 				'https://www.class-central.com/subject/social-sciences',
 				'https://www.class-central.com/subject/education',
 				'https://www.class-central.com/subject/personal-development',
 				'https://www.class-central.com/subject/art-and-design',
 				'https://www.class-central.com/subject/health'
-				
+
 		]
 		for url in urls:
 			yield scrapy.Request(url = url,callback = self.parse)
@@ -39,7 +39,6 @@ class CoursesSpider(scrapy.Spider):
 	def parse_pages(self,response):
 
 		links = response.xpath('//a[@class="text--charcoal text-2 medium-up-text-1 block course-name"]/@href').extract()
-		f=open("linkdata.txt",'a')
 		for link in links:
 			yield scrapy.Request(response.urljoin(link),callback = self.parse_links)
 				
@@ -61,32 +60,18 @@ class CoursesSpider(scrapy.Spider):
 		course_duration = self.formatVal(response.xpath('//div[@class="course-data-row course-sessions"]/span[2]/span/text()').extract_first())
 		course_prof = response.xpath('//div[@class="course-provider-wrap"]/span[2]/text()').extract()		
 		course_keywords = self.getKeywords(course_subject,course_name);
+		subkey = course_subject.replace(' ','-').lower()
 		print("======================================")
 		print(key)
 		print("======================================")
-		
-		dic = {
-
-				'sc_url' : sc_url,
-				'course_link' : course_link,
-				'course_name' : course_name,
-				'course_subject' : course_subject,
-				'course_val' : course_val,
-				#'course_pace' : course_pace,
-				'course_institution' : course_institution,
-				'course_provider' : course_provider,
-				'course_lang' : course_lang,
-				'course_certifications' : course_certifications,
-				'course_hours' : course_hours,
-				'course_duration' : course_duration,
-				'course_prof' : course_prof,
-				'course_keywords' : course_keywords
-
-			}
-
-		self.db.save(dic,key)
+		self.saveTocsv(" ".join(course_keywords),course_subject)
+		with open('file1.txt','a') as f :
+			f.write(subkey)
+			f.write('\n')
+		with open('file2.txt','a') as f :
+			f.write(course_subject)
+			f.write('\n')
 	
-
 	def formatVal(self,x):
 		if not x:
 			return "Information Not AVailable"
@@ -104,4 +89,12 @@ class CoursesSpider(scrapy.Spider):
 		tokens=a+b;
 		keyws=[word.lower() for word in tokens if word.lower() not in arbs]
 		return keyws
+
+	def saveTocsv(self , keywords , subs):
+		print(keywords)
+		print(subs)
+		stra = keywords + '\t' + subs
+		with open('datafile3.csv','a' , newline = '') as f :
+			f.write(stra)
+			f.write('\n')
 		
