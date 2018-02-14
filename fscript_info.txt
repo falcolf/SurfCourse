@@ -1,0 +1,2 @@
+fscript is flask app deployed on heroku for ML model access.
+github link : https://github.com/parth-11/NLP_MODEL-Surfcourse.git
