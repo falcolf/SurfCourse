@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:elevation="8dp"
+        card_view:cardCornerRadius="@dimen/card_album_radius">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/titleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+
+                android:singleLine="true"
+                android:text="Introduction to Java Programming"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/authorsView"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:textColor="@android:color/darker_gray"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/titleView"
+                android:layout_below="@+id/titleView"
+                android:text="Jacob Java and Hermon Berwan" />
+
+            <TextView
+                android:id="@+id/weeksView"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/courseProvider"
+                android:layout_below="@+id/courseProvider"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/black"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="7 weeks long"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/authorsView"
+
+                android:layout_below="@+id/authorsView"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+
+                android:text="Certication:" />
+
+            <TextView
+                android:id="@+id/certificationView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView"
+                android:layout_alignBottom="@+id/textView"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_toEndOf="@+id/textView"
+                android:text="$99 Available" />
+
+            <TextView
+                android:id="@+id/courseProvider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/universityProvider"
+                android:layout_below="@+id/universityProvider"
+                android:text="Microsoft"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/universityProvider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView"
+                android:layout_below="@+id/textView"
+                android:layout_marginBottom="4dp"
+                android:text="Utah University" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/weeksView"
+                android:layout_alignBottom="@+id/weeksView"
+                android:layout_toEndOf="@+id/universityProvider"
+                android:paddingLeft="3dp"
+                android:textColor="@android:color/white"
+                android:background="@android:color/holo_blue_light"
+                android:paddingRight="3dp"
+                android:text="6-8 hours per week"
+                android:id="@+id/hoursView" />
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignBottom="@+id/hoursView"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/coursera" />
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+

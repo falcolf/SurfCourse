@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "424250170857",
+    "firebase_url": "https://demopro-192011.firebaseio.com",
+    "project_id": "demopro-192011",
+    "storage_bucket": "demopro-192011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424250170857:android:d779c971c6cfea06",
+        "android_client_info": {
+          "package_name": "com.apps.dcodertech.courseaggregator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424250170857-v9o0hlqatphchnrcm9ur69n70ddqigap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.dcodertech.courseaggregator",
+            "certificate_hash": "7680d246084b27e262d1d6fea8e73687b252fb96"
+          }
+        },
+        {
+          "client_id": "424250170857-nfububdl0avh84alomp4r0fp0tap0rj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQQXEM2K1dVV078s6-cDBu5nxtJDPPdlk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424250170857-nfububdl0avh84alomp4r0fp0tap0rj0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
