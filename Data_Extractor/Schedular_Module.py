@@ -1,14 +1,12 @@
 import os
 from scrapyscript import Job, Processor
 from Data_Extractor.Data_Ex.spiders.firebase_access import FirebaseAccess
-from Data_Extractor.Data_Ex.spiders.ClassCentral import CoursesSpiderA , CoursesSpiderB
+from Data_Extractor.Data_Ex.spiders.ClassCentral import CoursesSpider
 #from Data_Extractor.Data_Ex.spiders.ClassCentral_All import CoursesSpider
 #from Data_Extractor.Data_Ex.spiders.datagen import CoursesSpiderData
 import datetime
 
 class Scrapper_Schedular:
-	#def __init__(self):
-			
 	
 	def getTime(self):
 		return str(datetime.datetime.now())	
@@ -19,7 +17,6 @@ class Scrapper_Schedular:
 		print('----------------'+self.startTime+'---------------------')
 		self.scrape(1)
 		self.scrape(2)
-		#self.scrape()
 		self.endTime = self.getTime()
 		print('===================ENDING===============')
 		print('----------------'+self.endTime+'---------------------')
@@ -27,12 +24,29 @@ class Scrapper_Schedular:
 
 	def scrape(self,ind):
 		db = FirebaseAccess()
+		urls1=[
+				'https://www.class-central.com/subject/cs',
+				'https://www.class-central.com/subject/business',
+				'https://www.class-central.com/subject/science',
+				'https://www.class-central.com/subject/data-science',
+				'https://www.class-central.com/subject/programming-and-software-development',
+				'https://www.class-central.com/subject/engineering',
+				'https://www.class-central.com/subject/maths'
+
+		]
+		urls2=[
+				'https://www.class-central.com/subject/humanities',
+				'https://www.class-central.com/subject/social-sciences',
+				'https://www.class-central.com/subject/education',
+				'https://www.class-central.com/subject/personal-development',
+				'https://www.class-central.com/subject/art-and-design',
+				'https://www.class-central.com/subject/health'
+
+		]
 		if ind == 1:
-			sched = Job(CoursesSpiderA,fbadb = db)
+			sched = Job(CoursesSpider,fbadb = db,urls_to_scrape = urls1)
 		else :
-			sched = Job(CoursesSpiderB,fbadb = db)
-		#sched = Job(CoursesSpider,fdab=db)
-		#sched = Job(CoursesSpiderData,fdab=db)
+			sched = Job(CoursesSpider,fbadb = db,urls_to_scrape = urls2)
 		processor = Processor(settings=None)
 		data = processor.run([sched])
 		

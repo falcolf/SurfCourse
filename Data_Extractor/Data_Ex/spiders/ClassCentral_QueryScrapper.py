@@ -31,7 +31,7 @@ class ClassCentralSpider(scrapy.Spider):
 
 	def parse_links(self,response):
 		course_link = self.formatVal(response.xpath('//div[@class="course-data-button"]/a/@href').extract_first())
-		course_name = self.formatVal(response.xpath('//h1[@class="course-title"]/text()').extract_first())
+		course_name = self.formatVal(response.xpath('//h1[@id="course-title"]/text()').extract_first())
 		course_subject = self.formatVal(response.xpath('//div[@class="course-data-row course-subject"]/a/text()').extract_first())
 		course_val = self.formatVal(response.xpath('//div[@class="course-data-row course-provider"]/span[2]/text()').extract_first())
 		course_pace = self.formatVal(response.xpath('//div[@class="course-data-row course-pace"]/a/text()').extract_first())
